@@ -409,23 +409,24 @@ ss.set(
             <section>
                 <section>
                     <h2>WRAP-UP</h2>
-
-                    <p>Storing your data in an encrypted database can be done with SQLCipher.</p>
-                    <br>
-                    <p>Your database key can be stored in 3 ways</p>
+                    
                     <ul>
-                        <li>The key to your database can be stored in the Device SecureStorage (Android Keystore, iOS KeyChain)</li>
-                        <li>You can ask the user for a password each time you start up the app</li>
-                        <li>You can store your database key on the server (which requires internet access at startup time of course!)</li>
+                        <li style="padding: 8px;">Storing your data in an encrypted database can be done with SQLCipher.</li>
+                        <li style="padding: 8px;">Your database key can be stored in 3 ways</li>
+                        <ul>
+                            <li style="padding: 8px;">The key to your database can be stored in the Device SecureStorage (Android Keystore, iOS KeyChain)</li>
+                            <li style="padding: 8px;">You can ask the user for a password each time you start up the app</li>
+                            <li style="padding: 8px;">You can store your database key on the server (which requires internet access at startup time of course!)</li>
+                        </ul>
                     </ul>
                 </section>
                 <section>
                     <h2>SQLCipher</h2>
                     <p>Working directly with the SQLCipher plugin causes a few problems:</p>
                     <ul>
-                        <li>Code is very verbose, there's lot's of boilerplate</li>
-                        <li>Cannot be tested in browser because there's no sqlite there...</li>
-                        <li>Syncing data between client and server is a manual job (tedious and error-prone!!)</li>
+                        <li style="padding: 8px;">Code is very verbose, there's lot's of boilerplate</li>
+                        <li style="padding: 8px;">Cannot be tested in browser because there's no sqlite there...</li>
+                        <li style="padding: 8px;">Syncing data between client and server is a manual job (tedious and error-prone!!)</li>
                     </ul>
                 </section>
                 <section>
@@ -433,13 +434,21 @@ ss.set(
                     <p>Is a means to store data on your device in a protected manner. </p>
                     <br>
                     <ul>
-                        <li>It remains safest however to not store data like credentials and passwords on your device. </li>
-                        <li>Some regulations even forbid you to (HIPAA)</li>
+                        <li style="padding: 8px;">It remains safest however to not store data like credentials and passwords on your device. </li>
+                        <li style="padding: 8px;">Some regulations even forbid you to (HIPAA)</li>
                     </ul>
                 </section>
                 <section>
                     <h2>Alternatives</h2>
                     <p><a href="https://pouchdb.com/">PouchDB</a> is definetly worth a look at!</p>
+                    
+                    <ul>
+                        <li>Can sync with CouchDb</li>
+                        <li>Nicer Api</li>
+                        <li>storage mechanism abstraction</li>
+                    </ul>
+                    
+                    <p>PouchDB extensions such as Pouchdb-rel and Pouchdb-find help solve some of the difficulties that may arise from working with Pouchdb</p>
                 </section>
             </section>
 
