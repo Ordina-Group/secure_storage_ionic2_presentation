@@ -259,11 +259,20 @@
                     <h2>Opening a database</h2>
                     <pre>
                         <code>
+                        
 sqlitePlugin.openDatabase({
     name: 'sensitiveData.db', 
     key: password,
     location: 'default'
-}
+}, 
+(db) => {
+    this._db = db;
+    resolve(this._db);
+}, 
+(error) => {
+    console.log('Error occured while creating database...' + error);
+    throw(error);
+});
                         </code>
                     </pre>
                 </section>
