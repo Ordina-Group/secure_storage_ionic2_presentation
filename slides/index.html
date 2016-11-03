@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>JWorks - A base template</title>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/ordina.css" id="theme">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <script src="js/head.min.js"></script>
+    <!--Add support for earlier versions of Internet Explorer -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Secure Storage with Ionic 2 and SqlCipher</h1>
+                <img src="img/jworks-logo.png" style="vertical-align: bottom;" width="22.5%"/>
+            </section>
+
+            <section>
+                <h2>Hi, my name is Steve.</h2>
+                <p>
+                    Competence Lead Enterprise Mobile<br />
+                    Ordina Belgium<br />
+                    @DzSteve<br />
+                    https://github.com/SteveDZ
+                </p>
+            </section>
+
+            <!-- **********
+                EDIT FROM HERE
+            ********** -->
+            <section>
+                <h2>Agenda</h2>
+                <ul>
+                    <li style="padding: 8px;">Prerequisites: stuff you need to install</li>
+                    <li style="padding: 8px;">Mini introduction to Ionic 2</li>
+                    <!--<li style="padding: 8px;">Secure Storage introduction</li>-->
+                    <li style="padding: 8px;">Problems we encounter when securely storing data</li>
+                    <li style="padding: 8px;">Introduction <b>Sqlite</b> and <b>SqlCipher</b> and exercises</li>
+                    <li style="padding: 8px;">Introduction Device Secure Storage and exercises</li>
+                    <li style="padding: 8px;">Wrap-up</li>
+                </ul>
+            </section>
+
+            <section>
+                <section>
+                    <h2>Prerequisites: stuff you need to install</h2>
+                </section>
+                <section>
+                    <h2>Install Ionic</h2>
+                    <ul>
+                        <li style="padding: 8px;">Install node and npm <br><a href="https://docs.npmjs.com/getting-started/installing-node">https://docs.npmjs.com/getting-started/installing-node</a></li>
+                        <li style="padding: 8px;">Install cordova and ionic: <br><pre><code>npm install -g cordova ionic</code></pre></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Install Android SDK</h2>
+                    <ul>
+                        <li style="padding: 8px;">Download Android Studio: <a href="https://developer.android.com/studio/index.html">https://developer.android.com/studio/index.html</a></li>
+                        <li style="padding: 8px;">Set <b>ANDROID_HOME</b> environment variable to your sdk folder</li>
+                        <li style="padding: 8px;">Add <b>sdk/tools</b> and <b>sdk/platform-tools</b> to your PATH environment variable</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Install an emulator</h2>
+                    
+                    <ul>
+                        <li>Genymotion: <a href="https://www.genymotion.com/download/">https://www.genymotion.com/download/</a></li>
+                    </ul>
+                    
+                    <h3 style="margin-top: 16px;">OR</h3>
+                    <ul>
+                        <li>Create new emulator in avd manager using the wizard provided<br><img src="img/avd_manager_create_emulator.png"/></li>
+                    </ul>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <img src="img/ionic_2.png"/>
+                </section>
+                <section>
+                    <h2>What is Ionic 2?</h2>
+                    <p>Ionic 2 is a Hybrid App development framework that builds on the foundations of cordova and Angular 2</p>
+                </section>
+                <section>
+                    <img src="img/cordova.png" />
+                </section>
+                <section>
+                    <ul>
+                        <li style="padding: 8px;">Cordova Creates a native application that wraps a native webview</li>
+                        <li style="padding: 8px;">Your web-app is being rendered in that webview. </li>
+                        <li style="padding: 8px;">Cordova enables device hardware interaction through plugins</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Some basic ionic commands</h2>
+                </section>
+                <section>
+                    <h2>Generating a new project</h2>
+                    <pre><code>ionic start appname template --v2</code></pre>
+                    <p>Where template is one of</p>
+                    <ul>
+                        <li style="padding: 8px;">blank</li>
+                        <li style="padding: 8px;">tabs</li>
+                        <li style="padding: 8px;">sidemenu</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Building a project</h2>
+                    <pre><code>ionic build platform</code></pre>
+                    <p>Where platform is one of</p>
+                    <ul>
+                        <li style="padding: 8px;">ios</li>
+                        <li style="padding: 8px;">android</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Serving a project</h2>
+                    <pre><code>ionic serve --livereload</code></pre>
+                    <p>Serves your app in the browser and enables livereload which watches your source files and refreshes your browser in case of changes.</p>
+                </section>
+                <section>
+                    <h2>Emulating a project</h2>
+                    <pre><code>ionic emulate platform</code></pre>
+                    <p>Runs your app on either the ios or android emulator.</p>
+                </section>
+                <section>
+                    <h2>Running a project</h2>
+                    <pre><code>ionic run platform</code></pre>
+                    <p>Runs your app directly on a device. <br>In order to run on the genymotion emulator, you also need to use the ionic run command.</p>
+                </section>
+                <section>
+                    You can find out more about the ionic cli at: <a href="https://ionicframework.com/docs/v2/cli/">https://ionicframework.com/docs/v2/cli/</a>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>Why do we need secure storage?</h2>
+                    <ul>
+                        <li style="padding: 8px;">To comply with security/privacy regulations</li>
+                        <li style="padding: 8px;">To avoid damage claims in case of data breach</li>
+                        <li style="padding: 8px;">To avoid reputation loss in case of data breach</li>
+                        <li style="padding: 8px;">...</li>
+                    </ul>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>Problems we encounter when securely storing data</h2>
+                </section>
+                <section>
+                    <h2>Storing data is easy</h2>
+                    <ul>
+                        <li style="padding: 8px;"> On Android
+                            <ul>
+                                <li style="padding: 8px;">SharedPreferences</li>
+                                <li style="padding: 8px;">Internal storage (Plain files)</li>
+                                <li style="padding: 8px;">SQLite database</li>
+                                <li style="padding: 8px;">...</li>
+                            </ul>
+                        </li>
+                        <li style="padding: 8px;"> On iOS
+                            <ul>
+                                <li style="padding: 8px;">NSKeyedArchiver</li>
+                                <li style="padding: 8px;">Files</li>
+                                <li style="padding: 8px;">SQLite database</li>
+                                <li style="padding: 8px;">...</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <img src="img/unprotected_data.jpg" style="width: 100%;"/>
+                    <ul>
+                        <li style="padding: 8px;">It's very easy to retrieve this data!</li>
+                        <li style="padding: 8px;">Most of the data stored with these mechanisms is plain readible</li>
+                        <li style="padding: 8px;">Sqlite database can be opened using command line sqlite tool or sqlitebrowser</li>
+                    </ul>
+                </section>
+                <section>
+                    <img src="img/how_is_that_possible.jpg" style="width: 100%;"/>
+                </section>
+                <section>
+                    <h2>How is that even possible?</h2>
+                    <ul>
+                        <li style="padding: 8px;">backing up apps</li>
+                        <li style="padding: 8px;">Rooting / jailbreaking device</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>How do you backup your app?</h2>
+
+                    <h3>On Android</h3>
+
+                    <ul>
+                        <li style="padding: 8px;">Download Android backup extractor<br><a href="https://github.com/nelenkov/android-backup-extractor">https://github.com/nelenkov/android-backup-extractor</a></li>
+                        <li style="padding: 8px;">Using adb <br><pre><code>adb backup <app-package-name></code></pre></li>
+                        <li style="padding: 8px;">Extract .ab file<pre><code>java -jar abe-all.jar unpack backup.ab backup.tar</code></pre></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>DEMO</h2>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>But this can be solved!</h2>
+                </section>
+                <section>
+                    <img src="img/sqlcipher-square-200x200.png" style="display: inline-block;"/>
+                    <img src="img/keychain.png" style="display: inline-block;"/>
+                    <img src="img/android_keystore.png"/>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>SQLCipher</h2>
+                    <ul>
+                        <li style="padding: 8px;">Drop-in replacement for sqlite</li>
+                        <li style="padding: 8px;">AES256 encrypted</li>
+                        <li style="padding: 8px;">Password protected</li>
+                        <li style="padding: 8px;">Available on all major platforms</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Cordova SQLCipher plugin</h2>
+                    <ul>
+                        <li style="padding: 8px;"><a href="https://github.com/litehelpers/Cordova-sqlcipher-adapter">https://github.com/litehelpers/Cordova-sqlcipher-adapter</a></li>
+                        <li style="padding: 8px;">Install cordova plugin: <br><pre><code>cordova plugin add cordova-sqlcipher-adapter --save</code></pre></li>
+                    </ul>                    
+                </section>
+                <section>
+                    <h2>Using the plugin in your Ionic Typescript code</h2>
+                    <pre><code>declare let sqlitePlugin:any;</code></pre>
+                    <p>because plugins are usually available through window object</p>
+                </section>
+                <section>
+                    <h2>Opening a database</h2>
+                    <pre>
+                        <code>
+sqlitePlugin.openDatabase({
+    name: 'sensitiveData.db', 
+    key: password,
+    location: 'default'
+}
+                        </code>
+                    </pre>
+                </section>
+                <section>
+                    <h2>Selecting data</h2>
+                    <pre>
+                        <code>
+db.executeSql(DbQueries.FIND_ALL_PATIENT_QUERY, [], (rs) => {
+    let patients: Array<Patient> = new Array();
+
+    if(rs.rows!.length! > 0) {
+        for(let i = 0; i <= rs.rows.length; i++) {
+            if (typeof rs.rows.item(i) !== 'undefined') {
+                patients.push(this.mapRecordToPatient(rs.rows.item(i)));
+            }
+        }
+
+        resolve(patients);                        
+    } else {
+        resolve([]);
+    }
+});</code>
+                    </pre>
+                    <ul>
+                        <li>First argument: Query string</li>
+                        <li>Second argument: Query placeholder values</li>
+                        <li>Third argument: result callback</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Modifying data</h2>
+                    <pre><code>
+db.transaction((tx) => {
+
+    tx.executeSql(
+        DbQueries.INSERT_PATIENT, 
+        [
+            patient.firstName,
+            patient.lastName
+        ], 
+        (tx, rs) => {
+            patient.patientId = rs.patientId;
+            resolve(patient);
+        },
+        (tx, err) => {
+            console.log('Error while inserting Patient record: ' + JSON.stringify(err));
+            resolve({});
+        }
+    );
+});
+                    </code></pre>
+                    
+                    <ul>
+                        <li>First argument: Query string</li>
+                        <li>Second argument: Query placeholder values</li>
+                        <li>Third argument: result callback (received both resultset and transaction object)</li>
+                        <li>Fourth argument: error callback</li>
+                    </ul>
+                </section>
+                <section>
+                    <p>
+                        Everything you need to know about the sqlcipher plugin can be found:<br>
+                        <a href="https://github.com/litehelpers/Cordova-sqlcipher-adapter">https://github.com/litehelpers/Cordova-sqlcipher-adapter</a><br>
+                        <a href="https://github.com/litehelpers/Cordova-sqlite-storage">https://github.com/litehelpers/Cordova-sqlite-storage</a>
+                    </p>
+                </section>
+                <section>
+                    <h2>Why not use Ionic Native?</h2>
+                    <ul>
+                        <li>key property not possible when opening database connection</li>
+                        <li>SQLite is poorly documented: <a href="https://ionicframework.com/docs/v2/native/sqlite/">https://ionicframework.com/docs/v2/native/sqlite/</a></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>EXERCISES</h2>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>Cordova SecureStorage</h2>
+                    <ul>
+                        <li><a href="https://github.com/Crypho/cordova-plugin-secure-storage">https://github.com/Crypho/cordova-plugin-secure-storage</a></li>
+                        <li>Install SecureStorage plugin: <br><pre><code>cordova plugin add cordova-plugin-secure-storage</code></pre></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>How does it work?</h2>
+                </section>
+                <section>
+                    <h2>Android</h2>
+                    <ul>
+                        <li style="padding: 8px;">A random 256-bit key is being generated</li>
+                        <li style="padding: 8px;">The AES key encrypts your value</li>
+                        <li style="padding: 8px;">The AES key is encrypted with a device-generated RSA (RSA/ECB/PKCS1Padding) from the Android KeyStore.</li>
+                        <li style="padding: 8px;">The combination of the encrypted AES key and value are stored in SharedPreferences</li>
+                        
+                        <br>
+                        
+                        <p><b>IMPORTANT: </b>SecureStorage plugin on Android only works when device security is enabled!</p>
+                        <p><b>IMPORTANT 2: </b>When changing the device security, your device generated keys are being wiped....!</p>
+                    </ul>
+                </section>
+                <section>
+                    <h2>iOS</h2>
+                    <p>On iOS, the SecureStore plugin uses KeyChain</p>
+                </section>
+                <section>
+                    <h2>Creating SecureStorage</h2>
+                    <pre><code>
+var ss = new cordova.plugins.SecureStorage(
+    () =>  console.log('Success'),
+    (error) => console.log('Error ' + error),
+    'my_app'
+);
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>Getting value from SecureStorage</h2>
+                    <pre><code>
+ss.get(
+    (value) => console.log('Success, got ' + value),
+    (error) => console.log('Error ' + error),
+    'mykey'
+);
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>Setting value in SecureStorage</h2>
+                    <pre><code>
+ss.set(
+    (key) => console.log('Set ' + key),
+    (error) => console.log('Error ' + error),
+    'mykey', 'myvalue'
+);
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>EXERCISES</h2>
+                </section>
+            </section>
+            
+            <section>
+                <section>
+                    <h2>WRAP-UP</h2>
+
+                    <p>Storing your data in an encrypted database can be done with SQLCipher.</p>
+                    <br>
+                    <p>Your database key can be stored in 3 ways</p>
+                    <ul>
+                        <li>The key to your database can be stored in the Device SecureStorage (Android Keystore, iOS KeyChain)</li>
+                        <li>You can ask the user for a password each time you start up the app</li>
+                        <li>You can store your database key on the server (which requires internet access at startup time of course!)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>SQLCipher</h2>
+                    <p>Working directly with the SQLCipher plugin causes a few problems:</p>
+                    <ul>
+                        <li>Code is very verbose, there's lot's of boilerplate</li>
+                        <li>Cannot be tested in browser because there's no sqlite there...</li>
+                        <li>Syncing data between client and server is a manual job (tedious and error-prone!!)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>SecureStorage</h2>
+                    <p>Is a means to store data on your device in a protected manner. </p>
+                    <br>
+                    <ul>
+                        <li>It remains safest however to not store data like credentials and passwords on your device. </li>
+                        <li>Some regulations even forbid you to (HIPAA)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Alternatives</h2>
+                    <p><a href="https://pouchdb.com/">PouchDB</a> is definetly worth a look at!</p>
+                </section>
+            </section>
+
+            <!-- **********
+                DO NOT REMOVE
+            ********** -->
+            <section style="text-align: left;">
+                <h2>Thanks for your attention!</h2>
+            </section>
+
+            <section style="text-align: left;" data-background="img/jworks-wallpaper-3.jpg"></section>
+        </div>
+    </div>
+    <script src="js/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            transition: 'convex',
+            dependencies: [
+                // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+                {
+                    src: 'lib/js/classList.js',
+                    condition: function () {
+                        return !document.body.classList;
+                    }
+                },
+                // Interpret Markdown in <section> elements
+                {
+                    src: 'plugin/markdown/marked.js',
+                    condition: function() {
+                        return !!document.querySelector( '[data-markdown]' );
+                    }
+                },
+                {
+                    src: 'plugin/markdown/markdown.js',
+                    condition: function() {
+                        return !!document.querySelector( '[data-markdown]' );
+                    }
+                },
+                // Syntax highlight for <code> elements
+                {
+                    src: 'plugin/highlight/highlight.js',
+                    async: true,
+                    callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
+                // Zoom in and out with Alt+click
+                {
+                    src: 'plugin/zoom-js/zoom.js',
+                    async: true
+                },
+                // Speaker notes
+                {
+                    src: 'plugin/notes/notes.js',
+                    async: true
+                }
+        ]
+        });
+    </script>
+</body>
+
+</html>
